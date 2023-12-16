@@ -1,0 +1,29 @@
+version: "3"
+services:
+  mysql:
+    image: alpine-mysql
+    container_name: login-backend-mysql
+    restart: always
+    environment:
+      - "MYSQL_ROOT_PASSWORD=123456"
+      - "MYSQL_DATABASE=login"
+      - "TZ=Asia/Shanghai"
+#    ports:
+      # 使用宿主机的3306端口映射到容器的3306端口
+      # 宿主机：容器
+#      - 33060:3306
+    networks:
+      login-network:
+        ipv4_address: 172.15.0.2
+  redis:
+    image: alpine-redis
+    container_name: login-backend-redis
+    networks:
+      login-network:
+        ipv4_address: 172.15.0.3
+
+networks:
+  login-network:
+    ipam:
+      config:
+        - subnet: 172.15.0.0/16
