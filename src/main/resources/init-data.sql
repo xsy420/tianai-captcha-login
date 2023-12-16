@@ -1,1 +1,0 @@
-INSERT IGNORE INTO `basis_user`(`username`, `password`) VALUES ('administrator', md5('admin123456'));
