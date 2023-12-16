@@ -97,7 +97,7 @@ class CaptchaData {
 const change_captcha = () => {
   axios.create({
     withCredentials: true
-  }).get('api/captcha').then(value => value.data as CaptchaData)
+  }).get('api/captcha').then(value => value.data.data as CaptchaData)
       .then(value => captcha_data.value = value)
 }
 
