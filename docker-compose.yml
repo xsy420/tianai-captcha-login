@@ -1,7 +1,7 @@
 version: "3"
 services:
   mysql:
-    image: alpine-mysql
+    build: Dockerfiles/alpine-mysql
     container_name: login-backend-mysql
     restart: always
     environment:
@@ -16,7 +16,7 @@ services:
       login-network:
         ipv4_address: 172.15.0.2
   redis:
-    image: alpine-redis
+    build: Dockerfiles/alpine-redis
     container_name: login-backend-redis
     networks:
       login-network:
