@@ -3,6 +3,7 @@ package com.xsy420.login.controller;
 import cloud.tianai.captcha.common.response.ApiResponse;
 import cloud.tianai.captcha.spring.vo.CaptchaResponse;
 import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
+import com.xsy420.login.common.CommonResult;
 import com.xsy420.login.domain.request.ImageCaptchaCheckRequest;
 import com.xsy420.login.services.CaptchaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class CaptchaController {
     }
 
     @GetMapping
-    public CaptchaResponse<ImageCaptchaVO> generate(HttpServletRequest request) throws Exception {
+    public CommonResult<CaptchaResponse<ImageCaptchaVO>> generate(HttpServletRequest request) throws Exception {
         return captchaService.generate(request);
     }
 

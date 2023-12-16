@@ -7,6 +7,8 @@ import cloud.tianai.captcha.spring.vo.CaptchaResponse;
 import cloud.tianai.captcha.spring.vo.ImageCaptchaVO;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
+import com.xsy420.login.common.CommonResponse;
+import com.xsy420.login.common.CommonResult;
 import com.xsy420.login.domain.request.ImageCaptchaCheckRequest;
 import com.xsy420.login.enums.CaptchaEnum;
 import com.xsy420.login.enums.EnumUtil;
@@ -48,7 +50,7 @@ public class CaptchaServiceImpl implements CaptchaService {
         this.imageCaptchaApplication = imageCaptchaApplication;
     }
 
-    private CaptchaResponse<ImageCaptchaVO> image_text_identify(HttpServletRequest request) throws Exception {
+    private CommonResult<CaptchaResponse<ImageCaptchaVO>> image_text_identify(HttpServletRequest request) throws Exception {
         String captchaId = UUID.randomUUID().toString().replace("-", "");
 
         Object oldCaptcha = request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
@@ -76,7 +78,7 @@ public class CaptchaServiceImpl implements CaptchaService {
         ImageCaptchaVO imageCaptchaVO = new ImageCaptchaVO();
         imageCaptchaVO.setType(CaptchaEnum.IMAGE_TEXT_IDENTIFY.getName());
         imageCaptchaVO.setBackgroundImage("data:image/jpeg;base64," + Base64.getEncoder().encodeToString(byteArray));
-        return CaptchaResponse.of(captchaId, imageCaptchaVO);
+        return CommonResponse.success(CaptchaResponse.of(captchaId, imageCaptchaVO));
     }
 
     /**
@@ -85,18 +87,18 @@ public class CaptchaServiceImpl implements CaptchaService {
      * 如果不是，随机生成一个天爱验证码
      */
     @Override
-    public CaptchaResponse<ImageCaptchaVO> generate(HttpServletRequest request) throws Exception {
+    public CommonResult<CaptchaResponse<ImageCaptchaVO>> generate(HttpServletRequest request) throws Exception {
         HttpSession session = request.getSession();
         Object CAPTCHA_TYPE = session.getAttribute("CAPTCHA_TYPE");
         int code;
 
         if (CAPTCHA_TYPE == null) {
             code = ThreadLocalRandom.current().nextInt(1, 6);
-            CAPTCHA_TYPE =  EnumUtil.fromCode(CaptchaEnum.class, code).getName();
+            CAPTCHA_TYPE = EnumUtil.fromCode(CaptchaEnum.class, code).getName();
         }
         if (!CAPTCHA_TYPE.equals(CaptchaEnum.IMAGE_TEXT_IDENTIFY.getName())) {
             code = ThreadLocalRandom.current().nextInt(1, 5);
-            CAPTCHA_TYPE =  EnumUtil.fromCode(CaptchaEnum.class, code).getName();
+            CAPTCHA_TYPE = EnumUtil.fromCode(CaptchaEnum.class, code).getName();
         }
 
         code = EnumUtil.fromValue(CaptchaEnum.class, CAPTCHA_TYPE.toString()).getCode();
@@ -107,7 +109,7 @@ public class CaptchaServiceImpl implements CaptchaService {
         } else {
             CaptchaResponse<ImageCaptchaVO> image = imageCaptchaApplication.generateCaptcha(CAPTCHA_TYPE.toString());
             imageCaptchaApplication.setCacheStore(new RedisCacheStore(stringRedisTemplate));
-            return image;
+            return CommonResponse.success(image);
         }
     }
 

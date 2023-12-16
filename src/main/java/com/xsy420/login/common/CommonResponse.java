@@ -3,6 +3,9 @@ package com.xsy420.login.common;
 import org.jetbrains.annotations.NotNull;
 
 public class CommonResponse {
+    public static @NotNull <T> CommonResult<T> success(T data) {
+        return new CommonResult<>(0, "成功", data);
+    }
 
     public static @NotNull <T> CommonResult<T> success(String message, T data) {
         return new CommonResult<>(0, message, data);
