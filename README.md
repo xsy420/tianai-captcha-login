@@ -22,7 +22,7 @@
 
 - 在当时好像还没有在Vue下的调用demo
 
-- 不是太想引入jQuary
+- 不是太想引入jQuery
 
 所以通过在运行demo时扒html代码，以及[2ae2270](https://github.com/tianaiyouqing/tianai-captcha-demo/commit/2ae2270acdec1c3f202642d82fa27e280838f0b6)之前的代码作为参考，做了这个demo。 并打包成了一个vue组件`<tianai-captcha>`
 
